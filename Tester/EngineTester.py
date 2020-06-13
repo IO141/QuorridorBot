@@ -1,4 +1,5 @@
-import unittest, copy
+import unittest
+import copy
 import Engine.Tile as Ti
 from Engine.Coordinate import Coordinate
 from Engine.Tile import Tile
@@ -263,9 +264,6 @@ class BoardTestCase(unittest.TestCase):
         self.assertFalse(board._compute_dynamic_valid_wall(False, Coordinate(4, 5)))
         self.assertTrue(board._compute_dynamic_valid_wall(False, Coordinate(3, 5)))
         self.assertTrue(board._compute_dynamic_valid_wall(False, Coordinate(7, 5)))
-
-
-
 
     def test_is_horizontal_wall_place_correct(self):
         board = Board(BoardTestCase.std_dim)

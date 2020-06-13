@@ -26,6 +26,9 @@ class Coordinate:
             return self._x == other.row and self._y == other.column
         return False
 
+    def __hash__(self):
+        return hash(repr(self))
+
     @property
     def row(self):
         return self._x

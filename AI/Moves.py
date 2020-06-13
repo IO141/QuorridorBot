@@ -1,5 +1,6 @@
 import Engine.Tile as Tile
 from Engine.PlayerMove import PlayerMove
+# from functools import lru_cache
 
 """
 Moves class
@@ -17,21 +18,26 @@ class Moves:
     """
 
     def __init__(self, board, wall_moves=None):
+        self._board = board
+        self.player_moves = None
+        self.wall_moves = self._compute_all_wall_moves() if wall_moves is None else wall_moves
 
-        self.wall_moves = self._compute_all_wall_moves(board) if wall_moves is None else wall_moves
+    def get_player_moves(self, pid, player_locations):
+        self.player_moves = self._compute_all_piece_moves(pid, player_locations)
 
-    def _compute_all_piece_moves(self, pid, player_locations, board):
+    # @lru_cache(maxsize=None)
+    def _compute_all_piece_moves(self, pid, player_locations):
         piece_moves = []
 
         # Initial get tile neighbors
         player_coord = player_locations[pid - 1]
-        player_tile = board.tile_at_coord(player_coord.row, player_coord.column)
+        player_tile = self._board.tile_at_coord(player_coord.row, player_coord.column)
         potential_coords = set([c for c in player_tile.neighbors if c is not None])
 
         # Figure out if special rules apply wrt other players
         if not potential_coords.isdisjoint(player_locations):
             for coord in potential_coords.intersection(player_locations):
-                occupied_tile = board.tile_at_coord(coord.row, coord.column)
+                occupied_tile = self._board.tile_at_coord(coord.row, coord.column)
 
                 try:
                     direction = self._compute_coordinate_diff_direction(player_coord, coord)
@@ -57,40 +63,43 @@ class Moves:
 
         return piece_moves
 
-    def _compute_all_wall_moves(self, board):
+    # @lru_cache(maxsize=None)
+    def _compute_all_wall_moves(self):
         wall_moves = []
 
-        horizontal_moves = board.compute_all_valid_horizontal_walls()
-        for pid in range(0, len(board.goals)):
+        horizontal_moves = self._board.compute_all_valid_horizontal_walls()
+        for pid in range(0, len(self._board.goals)):
             for coord in horizontal_moves:
-                board.place_wall(True, coord)
+                self._board.place_wall(True, coord)
 
-                if not self.path_exists(coord, board.goals[pid], board):
+                if not self.path_exists(coord, self._board.goals[pid], self._board):
                     horizontal_moves.remove()
 
-                board.undo_wall(True, coord)
+                self._board.undo_wall(True, coord)
 
-        vertical_moves = board.compute_all_valid_vertical_walls()
-        for pid in range(0, len(board.goals)):
+        vertical_moves = self._board.compute_all_valid_vertical_walls()
+        for pid in range(0, len(self._board.goals)):
             for coord in vertical_moves:
-                board.place_wall(False, coord)
+                self._board.place_wall(False, coord)
 
-                if not self.path_exists(coord, board.goals[pid], board):
+                if not self.path_exists(coord, self._board.goals[pid], self._board):
                     vertical_moves.remove()
 
-                board.undo_wall(False, coord)
+                self._board.undo_wall(False, coord)
 
         wall_moves.extend([PlayerMove(move, -1, True) for move in horizontal_moves])
         wall_moves.extend([PlayerMove(move, -1, False) for move in vertical_moves])
 
         return wall_moves
 
+    # @lru_cache(maxsize=None)
     def path_exists(self, coord_start, coord_end_lst, board):
         for coord_end in coord_end_lst:
             if len(self.bfs_search(coord_start, coord_end, board)) > 0:
                 return True
         return False
 
+    # @lru_cache(maxsize=None)
     def bfs_search(self, coord_start, coord_end, board):
         dispenser = [coord_start]
 
@@ -108,6 +117,7 @@ class Moves:
         return self.construct_path(predecessors, coord_start, coord_end)
 
     @staticmethod
+    # @lru_cache(maxsize=None)
     def construct_path(predecessors, coord_start, coord_end):
         path = []
 
@@ -121,6 +131,7 @@ class Moves:
         return path
 
     @staticmethod
+    # @lru_cache(maxsize=None)
     def _compute_coordinate_diff_direction(center_coord, adjacent_coord):
         row_diff = center_coord.row - adjacent_coord.row
         column_diff = center_coord.column - adjacent_coord.column

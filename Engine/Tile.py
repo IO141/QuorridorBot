@@ -23,6 +23,9 @@ class Tile:
                    and self.occupant == other.occupant
         return False
 
+    def __hash__(self):
+        return hash(repr(self))
+
     @property
     def neighbors(self):
         """

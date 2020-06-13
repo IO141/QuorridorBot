@@ -1,5 +1,3 @@
-from Engine.Coordinate import Coordinate
-
 """
 Player class
 Handles player interactions with the game
