@@ -11,10 +11,11 @@ EAST = 3
 
 class Tile:
 
-    def __init__(self, coordinate, neighbors):
-        self._coordinate = coordinate
-        self._neighbors = neighbors
+    def __init__(self, coordinate, neighbors=None):
         self._occupantID = -1
+        self._coordinate = coordinate
+        self._neighbors = neighbors if neighbors is not None \
+            else [None, None, None, None]
 
     def __eq__(self, other):
         if isinstance(other, Tile):

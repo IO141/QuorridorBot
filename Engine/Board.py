@@ -11,7 +11,7 @@ Used to keep track of the game state
 
 class Board:
 
-    def __init__(self, dim): # dim must be even number >= 10
+    def __init__(self, dim):  # dim must be even number >= 10
         self.dimensions = dim
         self._homes = self._compute_player_homes()
         self._goals = self._compute_player_goals()
@@ -36,7 +36,7 @@ class Board:
         for i in range(0, self.dimensions):
             board_lst = []
             for j in range(0, self.dimensions):
-                tile = self.__init_tile(Tile(Coordinate(i, j), [None, None, None, None]))
+                tile = self.__init_tile(Tile(Coordinate(i, j)))
                 board_lst.append(tile)
             self._board.append(board_lst)
 
