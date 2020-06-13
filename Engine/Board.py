@@ -36,22 +36,25 @@ class Board:
         for i in range(0, self.dimensions):
             board_lst = []
             for j in range(0, self.dimensions):
-                tile = self.__init_tile(Tile(Coordinate(i, j)))
+                tile = self.__init_tile(Coordinate(i, j))
                 board_lst.append(tile)
             self._board.append(board_lst)
 
-    def __init_tile(self, tile):
-        row = tile.coordinate.row
-        column = tile.coordinate.column
+    def __init_tile(self, coord):
+        tile = Tile(coord)
+        tile.init_draw(self.dimensions)
+
+        row = coord.row
+        col = coord.column
 
         if row - 1 >= 0:
-            Tile.add_neighbor(tile, NORTH, Coordinate(row - 1, column))
+            Tile.add_neighbor(tile, NORTH, Coordinate(row - 1, col))
         if row + 1 < self._dimensions:
-            Tile.add_neighbor(tile, SOUTH, Coordinate(row + 1, column))
-        if column - 1 >= 0:
-            Tile.add_neighbor(tile, EAST, Coordinate(row, column - 1))
-        if column + 1 < self._dimensions:
-            Tile.add_neighbor(tile, WEST, Coordinate(row, column + 1))
+            Tile.add_neighbor(tile, SOUTH, Coordinate(row + 1, col))
+        if col - 1 >= 0:
+            Tile.add_neighbor(tile, EAST, Coordinate(row, col - 1))
+        if col + 1 < self._dimensions:
+            Tile.add_neighbor(tile, WEST, Coordinate(row, col + 1))
 
         return tile
 

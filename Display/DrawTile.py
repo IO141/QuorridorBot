@@ -4,9 +4,8 @@ DIVIDER = "@"
 
 class DrawTile:
 
-    def __init__(self, tile, dim):
-        self.__tile = tile
-        self.coordinate = tile.coord
+    def __init__(self, coord, dim):
+        self.coordinate = coord
         self.dimensions = dim
         self.tile_template = self.__get_tile_template()
 
@@ -36,6 +35,9 @@ class DrawTile:
         elif 0 < row and col == dim:
             return "%s%s\n{0}" \
                    "%s%s\n{0}".format(DIVIDER)
+
+    def gen(self):
+        return self.coordinate
 
     def draw(self):
         row = self.coordinate.row

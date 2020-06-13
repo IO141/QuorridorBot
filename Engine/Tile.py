@@ -1,3 +1,5 @@
+from Display.DrawTile import DrawTile
+
 """
 Tile class
 Used to define unique locations on a game board
@@ -16,6 +18,7 @@ class Tile:
         self._coordinate = coordinate
         self._neighbors = neighbors if neighbors is not None \
             else [None, None, None, None]
+        self._draw = None
 
     def __eq__(self, other):
         if isinstance(other, Tile):
@@ -26,6 +29,9 @@ class Tile:
 
     def __hash__(self):
         return hash(repr(self))
+
+    def init_draw(self, board_dim):
+        self._draw = DrawTile(self.coordinate, board_dim)
 
     @property
     def neighbors(self):
