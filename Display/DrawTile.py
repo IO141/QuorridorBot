@@ -58,3 +58,14 @@ class DrawTile:
         return \
             sym['bh_wall' if neighbor is None else 'h_wall'] if h_wall else \
             sym['bv_wall' if neighbor is None else 'v_wall']
+
+    def draw(self, occupant, neighbors, sym):
+        from Engine.Tile import NORTH, EAST, SOUTH, WEST
+
+        return self.tile_template.format(
+            player=self.__get_player(occupant),
+            nh_wall=self.__get_wall(neighbors[NORTH], sym, True),
+            sh_wall=self.__get_wall(neighbors[SOUTH], sym, True),
+            wv_wall=self.__get_wall(neighbors[WEST], sym, True),
+            ev_wall=self.__get_wall(neighbors[EAST], sym, True),
+        )
