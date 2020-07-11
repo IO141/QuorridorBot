@@ -6,16 +6,17 @@ init(autoreset=True)
 
 PLAYER = "●"
 
-BG = Back.BLACK + Style.NORMAL
-STD = BG + Fore.WHITE
-BLANK = BG + Fore.BLACK
+BG = Back.LIGHTWHITE_EX + Style.NORMAL
+STD = BG + Fore.BLACK
+BLANK = BG + Fore.LIGHTWHITE_EX
+RST = Style.RESET_ALL
 
 SYMBOLS = {
-    "wse": STD + "┬", "nwe": STD + "┴", "nse": STD + "├",
-    "nws": STD + "┤", "nwse": STD + "┼", "se": STD + "┌",
-    "ws": STD + "┐", "ne": STD + "└", "nw": STD + "┘",
-    "we": STD + "───", "ns": STD + "│",
-    "b_we": BLANK + "───", "b_ns": BLANK + "│"
+    "t_intr": STD + "┬" + RST, "b_intr": STD + "┴" + RST, "l_intr": STD + "├" + RST,
+    "r_intr": STD + "┤" + RST, "m_intr": STD + "┼" + RST, "tl_crn": STD + "┌" + RST,
+    "tr_crn": STD + "┐" + RST, "bl_crn": STD + "└" + RST, "br_crn": STD + "┘" + RST,
+    "h_wall": STD + "───" + RST, "v_wall": STD + "│" + RST,
+    "bh_wall": BLANK + "───" + RST, "bv_wall": BLANK + "│" + RST
 }
 
 
@@ -54,14 +55,14 @@ class DrawBoard:
         return pint
 
     @staticmethod
-    def __get_players():
+    def get_players():
         player = BG + PLAYER
         space = BG + " "
 
         return [
-            (space, Fore.BLACK + player, space),    # No player
             (space, Fore.RED + player, space),      # Player 1
             (space, Fore.GREEN + player, space),    # Player 2
             (space, Fore.YELLOW + player, space),   # Player 3
-            (space, Fore.BLUE + player, space)      # Player 4
+            (space, Fore.BLUE + player, space),     # Player 4
+            (space, Fore.BLACK + player, space)     # No player
         ]
