@@ -61,11 +61,10 @@ class TileTestCase(unittest.TestCase):
         self.assertTrue(Ti.WEST != Ti.EAST)
 
     def test_is_eq_correct(self):
-        neighbors = [None, None, None, None]
         neighbors1 = [Coordinate(1, 2), None, None, None]
-        tile1 = Tile(coordinate=Coordinate(1, 2), neighbors=neighbors)
-        tile2 = Tile(coordinate=Coordinate(1, 2), neighbors=neighbors)
-        tile3 = Tile(coordinate=Coordinate(1, 3), neighbors=neighbors)
+        tile1 = Tile(coordinate=Coordinate(1, 2))
+        tile2 = Tile(coordinate=Coordinate(1, 2))
+        tile3 = Tile(coordinate=Coordinate(1, 3))
         tile4 = Tile(coordinate=Coordinate(1, 2), neighbors=neighbors1)
         self.assertTrue(tile1 == tile2)
         self.assertFalse(tile1 == tile3)
@@ -73,35 +72,31 @@ class TileTestCase(unittest.TestCase):
 
     def test_is_coordinate_correct(self):
         coord = Coordinate(1, 2)
-        neighbors = [None, None, None, None]
-        tile1 = Tile(coordinate=coord, neighbors=neighbors)
+        tile1 = Tile(coordinate=coord)
         self.assertTrue(tile1.coordinate == coord)
 
     def test_is_neighbors_correct_input1(self):
         coord = Coordinate(1, 2)
         neighbors = [None, None, None, None]
-        tile1 = Tile(coordinate=coord, neighbors=neighbors)
+        tile1 = Tile(coordinate=coord)
         self.assertTrue(tile1.neighbors == neighbors)
         self.assertTrue(tile1.coordinate == coord)
 
     def test_is_neighbors_correct_input2(self):
         coord = Coordinate(1, 2)
-        neighbors1 = [None, None, None, None]
         neighbors2 = [coord, None, None, None]
-        tile1 = Tile(coordinate=coord, neighbors=neighbors1)
+        tile1 = Tile(coordinate=coord)
         tile2 = Tile(coordinate=coord, neighbors=neighbors2)
         self.assertTrue(tile2.neighbors[0] == tile1.coordinate)
 
     def test_is_occupant_correct(self):
         coord = Coordinate(1, 2)
-        neighbors = [None, None, None, None]
-        tile1 = Tile(coordinate=coord, neighbors=neighbors)
+        tile1 = Tile(coordinate=coord)
         self.assertTrue(tile1.occupant == -1)
 
     def test_is_end_occupancy_correct(self):
         coord = Coordinate(1, 2)
-        neighbors = [None, None, None, None]
-        tile1 = Tile(coordinate=coord, neighbors=neighbors)
+        tile1 = Tile(coordinate=coord)
         tile1.occupant = 1
         Tile.end_occupancy(tile1)
         self.assertTrue(tile1.occupant == -1)
