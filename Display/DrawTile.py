@@ -10,31 +10,42 @@ class DrawTile:
         self.tile_template = self.__get_tile_template()
 
     def __get_tile_template(self):
+        from Display.DrawBoard import SYMBOLS
+
         row = self.coordinate.row
         col = self.coordinate.column
         dim = self.dimensions - 1
 
         if row == 0 and col == 0:
-            return "%s%s%s{0}" \
-                   "%s%s%s{0}" \
-                   "%s%s%s{0}".format(DIVIDER)
+            return f"{SYMBOLS['tl_crn']}""{nh_wal}"f"{SYMBOLS['t_intr']}%s" \
+                   "{wv_wal}{player}{ev_wal}%s" \
+                   f"{SYMBOLS['l_intr']}""{sh_wal}"f"{SYMBOLS['m_intr']}%s" \
+                   % (DIVIDER, DIVIDER, DIVIDER)
         elif row == 0 and 0 < col < dim:
-            return "%s%s{0}" \
-                   "%s%s{0}" \
-                   "%s%s{0}".format(DIVIDER)
+            return "{nh_wal}"f"{SYMBOLS['t_intr']}%s" \
+                   "{player}{ev_wal}%s" \
+                   "{sh_wal}"f"{SYMBOLS['m_intr']}%s" \
+                   % (DIVIDER, DIVIDER, DIVIDER)
         elif row == 0 and col == dim:
-            return "%s%s\n{0}" \
-                   "%s%s\n{0}" \
-                   "%s%s\n{0}".format(DIVIDER)
+            return "{nh_wal}"f"{SYMBOLS['tr_crn']}\n%s" \
+                   "{player}{ev_wal}\n%s" \
+                   "{sh_wal}"f"{SYMBOLS['r_intr']}\n%s" \
+                   % (DIVIDER, DIVIDER, DIVIDER)
         elif 0 < row and col == 0:
-            return "%s%s%s{0}" \
-                   "%s%s%s{0}".format(DIVIDER)
+            bottom = ("bl_crn", "b_intr") if row == dim else ("l_intr", "m_intr")
+            return "{wv_wal}{player}{ev_wal}%s" \
+                   f"{SYMBOLS[bottom[0]]}""{sh_wal}"f"{SYMBOLS[bottom[1]]}%s" \
+                   % (DIVIDER, DIVIDER)
         elif 0 < row and 0 < col < dim:
-            return "%s%s{0}" \
-                   "%s%s{0}".format(DIVIDER)
+            bottom = "b_intr" if row == dim else "m_intr"
+            return "{player}{ev_wal}%s" \
+                   "{sh_wal}"f"{SYMBOLS[bottom]}%s" \
+                   % (DIVIDER, DIVIDER)
         elif 0 < row and col == dim:
-            return "%s%s\n{0}" \
-                   "%s%s\n{0}".format(DIVIDER)
+            bottom = "br_crn" if row == dim else "r_intr"
+            return "{player}{ev_wal}\n%s" \
+                   "{sh_wal}"f"{SYMBOLS[bottom]}\n%s" \
+                   % (DIVIDER, DIVIDER)
 
     def gen(self):
         return self.coordinate
