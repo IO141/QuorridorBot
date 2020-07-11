@@ -47,48 +47,14 @@ class DrawTile:
                    "{sh_wal}"f"{SYMBOLS[bottom]}\n%s" \
                    % (DIVIDER, DIVIDER)
 
-    def gen(self):
-        return self.coordinate
+    @staticmethod
+    def __get_player(occupant):
+        from Display.DrawBoard import DrawBoard
 
-    def draw(self):
-        row = self.coordinate.row
-        col = self.coordinate.column
-        dim = self.dimensions
+        return DrawBoard.get_players()[occupant]
 
-        # b == border, w == wall, i == intersection (with wall)
-        if row == 0 and col == 0:
-            # top left corner, eval NORTH-b + WEST-b + SOUTH-i + EAST-w
-            # %s%s%s \n %s%s%s \n %s%s%s
-            pass
-        if row == 0 and 0 < col < dim:
-            # top side, eval NORTH-b + SOUTH-i + EAST-w
-            # %s%s \n %s%s \n %s%s
-            pass
-        if row == 0 and col == dim:
-            # top right corner, eval NORTH-b + SOUTH-w + EAST-b
-            # %s%s \n %s%s \n %s%s
-            pass
-        if 0 < row < dim and col == 0:
-            # left side, eval WEST-b + SOUTH-i + EAST-w
-            # %s%s%s \n %s%s%s
-            pass
-        if 0 < row < dim and 0 < col < dim:
-            # mid block, eval SOUTH-i + EAST-w
-            # %s%s \n %s%s
-            pass
-        if 0 < row < dim and col == dim:
-            # right side, eval SOUTH-w + EAST-b
-            # %s%s \n %s%s
-            pass
-        if row == dim and col == 0:
-            # bottom left corner, eval WEST-b + SOUTH-b + EAST-w
-            # %s%s%s \n %s%s%s
-            pass
-        if row == dim and 0 < col < dim:
-            # bottom side, eval SOUTH-b + EAST-w
-            # %s%s \n %s%s
-            pass
-        if row == dim and col == dim:
-            # bottom right corner, eval SOUTH-b + EAST-b
-            # %s%s \n %s%s
-            pass
+    @staticmethod
+    def __get_wall(neighbor, sym, h_wall):
+        return \
+            sym['bh_wall' if neighbor is None else 'h_wall'] if h_wall else \
+            sym['bv_wall' if neighbor is None else 'v_wall']
